@@ -21,3 +21,58 @@
 .btn-blue:hover {
     @apply .bg-blue-dark;
 }
+
+.tabs-component-tabs {
+    border: solid 1px #ddd;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    -moz-padding-start: 15px;
+    -webkit-padding-start: 15px;
+}
+
+@media (min-width: 700px) {
+    .tabs-component-tabs {
+        border: 0;
+        align-items: stretch;
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: -1px;
+    }
+}
+
+.tabs-component-tab {
+    @apply .bg-white .text-grey-darkest .text-sm .font-semibold;
+    list-style: none;
+}
+
+.tabs-component-tab:hover {
+    @apply .text-grey-dark;
+}
+
+.tabs-component-tab.is-active {
+    @apply .text-black;
+}
+
+@media (min-width: 700px) {
+    .tabs-component-tab {
+        @apply .border-t-4 .border-grey-light .border-solid;
+        border-radius: 3px 3px 0 0;
+        margin-right: .5em;
+        transform: translateY(2px);
+        transition: transform .3s ease;
+    }
+
+    .tabs-component-tab.is-active {
+        @apply .border-t-4 .border-grey-darker .border-solid;
+        z-index: 2;
+        transform: translateY(0);
+    }
+}
+
+.tabs-component-tab-a {
+    align-items: center;
+    color: inherit;
+    display: flex;
+    padding: .75em 1em;
+    text-decoration: none;
+}

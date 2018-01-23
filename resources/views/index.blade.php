@@ -15,7 +15,7 @@
                     <h1 class="text-grey-darkest font-thin"><span class="font-thin font-normal">Simple</span>Mailer</h1>
                 </div>
             </div>
-            <app/>
+            <app :version="'{{ config('app.version') }}'"/>
         </div>
         <script src="js/app.js"></script>
     </body>

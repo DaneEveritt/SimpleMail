@@ -23,6 +23,7 @@
         "webpack": "^3.10.0"
     },
     "dependencies": {
-        "vee-validate": "^2.0.3"
+        "vee-validate": "^2.0.3",
+        "vue-tabs-component": "^1.4.0"
     }
 }
