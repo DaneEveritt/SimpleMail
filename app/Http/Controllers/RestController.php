@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SendMessageRequest;
 use App\Jobs\SendEmailJob;
 use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 
@@ -31,9 +32,9 @@ class RestController extends Controller
      * back to the application homepage.
      *
      * @param \App\Http\Requests\SendMessageRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(SendMessageRequest $request): RedirectResponse
+    public function store(SendMessageRequest $request): JsonResponse
     {
         $this->dispatcher->dispatch(new SendEmailJob(
             $request->input('email'),
@@ -41,6 +42,8 @@ class RestController extends Controller
             $request->ip()
         ));
 
-        return redirect()->route('index');
+        return response()->json([
+            'success' => true,
+        ]);
     }
 }

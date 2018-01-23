@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .form-input {
-    @apply .border .w-full .p-2 .px-3 .text-grey-darker;
+    @apply .rounded .border .w-full .p-2 .px-3 .text-grey-darker;
 }
 
 .form-label {

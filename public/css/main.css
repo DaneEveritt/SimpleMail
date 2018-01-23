@@ -4585,6 +4585,7 @@ button,
 }
 
 .form-input {
+  border-radius: .25rem;
   border-width: 1px;
   width: 100%;
   padding: .5rem;
