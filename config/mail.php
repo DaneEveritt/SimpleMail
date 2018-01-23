@@ -17,6 +17,9 @@ return [
     */
 
     'driver' => env('MAIL_DRIVER', 'smtp'),
+    'fallback' => env('MAIL_DRIVER_FALLBACK', 'log'),
+
+    'deliver_to' => env('MAIL_DELIVER_TO'),
 
     /*
     |--------------------------------------------------------------------------

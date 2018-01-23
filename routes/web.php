@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'BaseController@index')->name('index');
+
+Route::post('/send', 'RestController@store')->name('rest.store');
