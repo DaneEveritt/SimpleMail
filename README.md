@@ -52,6 +52,11 @@ Now that we have the basic environment setup lets open that `.env` file and make
 ### Running the Queue Worker
 In order for emails to be processed a queue worker must be running. By default the driver is set to the database, however if you are wanting to avoid additional overhead you may set `QUEUE_DRIVER=sync` and emails will be sent right away with a slight delay on the app. If you use the sync driver this step is unnecessary.
 
+We also need to run some migrations to setup the database for us to use. This only needs to be run once.
+```
+php artisan migrate
+```
+
 You'll want to set this up as a long running task which [the Laravel documentation covers](https://laravel.com/docs/5.5/queues#supervisor-configuration), but for the sake of development we will run this in the foreground in a seperate SSH window.
 ```
 php artisan queue:work --tries=1
@@ -60,7 +65,7 @@ php artisan queue:work --tries=1
 ### Compiling Assets
 In the development builds we need to compile our assets so the application looks pretty. To do so, simply run the command below:
 ```
-npm run build
+npm run development
 ```
 
 This will compile the CSS and JS for the web.

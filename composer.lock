@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e6aba10580aede4a848fdc8dea6c6953",
+    "content-hash": "acf2c553bc21169fdd24f8549925fa74",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -1463,6 +1463,44 @@
                 "shell"
             ],
             "time": "2017-12-28T16:14:16+00:00"
+        },
+        {
+            "name": "puz/dynamic-mail",
+            "version": "0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/molteber/puz-dynamic-mail.git",
+                "reference": "8def828bfc2339428b39f2b4289377618b220d7e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/molteber/puz-dynamic-mail/zipball/8def828bfc2339428b39f2b4289377618b220d7e",
+                "reference": "8def828bfc2339428b39f2b4289377618b220d7e",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/mail": ">=5.4.0",
+                "illuminate/support": ">=5.4.0",
+                "php": ">=5.6.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Puz\\DynamicMail\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Morten Mehus",
+                    "email": "contact@mortenmehus.no"
+                }
+            ],
+            "description": "Change Laravel mail driver configurations during runtime.",
+            "time": "2017-09-30T12:52:58+00:00"
         },
         {
             "name": "ramsey/uuid",

@@ -2,26 +2,18 @@
 
 namespace App\Jobs;
 
-use App\Http\Requests\SendMessageRequest;
 use App\Mailables\NewMessageEmail;
 use Cake\Chronos\Chronos;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Bus\Dispatcher;
-use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Log;
 
 class SendEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable;
-
-    /**
-     * @var bool
-     */
-    protected $useFallback = false;
 
     /**
      * @var array
@@ -32,6 +24,18 @@ class SendEmailJob implements ShouldQueue
      * @var string
      */
     public $queueTime;
+
+    /**
+     * Maximum number of times this job can be attempted.
+     *
+     * @var int
+     */
+    public $tries = 1;
+
+    /**
+     * @var bool
+     */
+    public $useFallback = false;
 
     /**
      * SendEmailJob constructor.
@@ -47,34 +51,25 @@ class SendEmailJob implements ShouldQueue
             'message' => $message,
             'ip' => $ip,
         ];
+
         $this->queueTime = Chronos::now(config('app.timezone'))->toIso8601String();
     }
 
     /**
-     * Set the job to use the fallback email provider.
-     *
-     * @return $this
-     */
-    public function useFallbackProvider()
-    {
-        $this->useFallback = true;
-
-        return $this;
-    }
-
-    /**
      * Send the email using the defined provider.
-     *
-     * @param \Illuminate\Contracts\Mail\Mailer $mailer
      */
-    public function handle(Mailer $mailer)
+    public function handle()
     {
+        /** @var \Puz\DynamicMail\DynMailer $mailer */
+        $mailer = app()->make('puz.dynamic.mailer');
+        $service = $mailer->via(config('mail.driver'));
+
         // If using fallback set the correct driver.
         if ($this->useFallback) {
-            config()->set('mail.driver', config('mail.fallback_driver', 'log'));
+            $service = $mailer->via(config('mail.fallback', 'log'));
         }
 
-        $mailer->to(config('mail.deliver_to'))
+        $service->to(config('mail.deliver_to'))
             ->send(new NewMessageEmail($this->data, $this->queueTime));
     }
 
@@ -88,14 +83,12 @@ class SendEmailJob implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
-        Log::error($exception);
-
         if ($this->useFallback) {
             throw new Exception('Failed to send a message over the default and fallback email providers.');
         }
 
         $job = new self($this->data['from'], $this->data['message'], $this->data['ip']);
-        $job->useFallbackProvider();
+        $job->useFallback = true;
 
         app()->make(Dispatcher::class)->dispatch($job);
     }
