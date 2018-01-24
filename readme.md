@@ -2,6 +2,8 @@
 This application is a small demo tool making use of Vuejs, Tailwindcss, and Laravel 5.5 to power a simple interface to deliver
 an email to a defined address using a core provider, and gracefully falling back to a secondary provider if the first one fails.
 
+![](https://i.imgur.com/p2OLsNx.png)
+
 # Installation
 This quick installation tutorial will get this application running in a local development environment to give you a peek at
 how it works, and how it looks.
