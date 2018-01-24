@@ -1,58 +1,69 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# Simple Mailer
+This application is a small demo tool making use of Vuejs, Tailwindcss, and Laravel 5.5 to power a simple interface to deliver
+an email to a defined address using a core provider, and gracefully falling back to a secondary provider if the first one fails.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+# Installation
+This quick installation tutorial will get this application running in a local development environment to give you a peek at
+how it works, and how it looks.
 
-## About Laravel
+### Dependencies
+In development environments you'll need the following dependencies installed.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+* PHP 7.1+ with the following extensions: OpenSSL, PDO, Mbstring, Tokenizer, XML
+* Nodejs 6+
+* MySQL 5.7+ (with a table and user configured)
+* [Composer](https://getcomposer.org/download/)
+* Nginx (optional)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Download
+You'll want to clone this repository using the command below to a location of your choosing.
+```
+git clone https://github.com/DaneEveritt/SimpleMailer .
+```
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+### Dependencies
+Once you have the files downloaded we'll need to install all of the dependencies for the software.
 
-## Learning Laravel
+```
+composer install
+npm install
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+### Environment Setup
+Once we have dependencies installed we need to setup our environment file. This can be done by running `cp .env.example .env` and then
+running `php artisan key:generate` which will create an application encryption key.
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+Now that we have the basic environment setup lets open that `.env` file and make a few updates.
 
-## Laravel Sponsors
+`APP_TIMEZONE` — You should set this to the timezone that this app is running in.
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
+`APP_URL` — Set this to the URL where this application is running so that emails originate from the correct address. Include `http://` at the front.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Pulse Storm](http://www.pulsestorm.net/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
+`DB_*` — You'll want to adjust these settings as necessary to ensure that the application can connect to your database instance using the table and user you setup earlier.
 
-## Contributing
+`MAIL_DRIVER` — This is where the magic happens with this app. You'll want to set this to one of the supported drivers: smtp, sendmail, mailgun, mandrill, ses, sparkpost, or log. By default this app will send email first using the SMTP credentials and falling back to logging the email to a log if that fails. Please reference the [Laravel Mail Documentation](https://laravel.com/docs/5.5/mail#driver-prerequisites) for more details about these drivers as they may require additional dependencies or environment variables. 
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+`MAIL_DRIVER_FALLBACK` — Same as the `MAIL_DRIVER`, except this is the fallback driver that should be used if the main driver reports an error.
 
-## Security Vulnerabilities
+`MAIL_DELIVER_TO` — The email address that messages should be sent to that are sent via this app.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Running the Queue Worker
+In order for emails to be processed a queue worker must be running. By default the driver is set to the database, however if you are wanting to avoid additional overhead you may set `QUEUE_DRIVER=sync` and emails will be sent right away with a slight delay on the app. If you use the sync driver this step is unnecessary.
 
-## License
+You'll want to set this up as a long running task which [the Laravel documentation covers](https://laravel.com/docs/5.5/queues#supervisor-configuration), but for the sake of development we will run this in the foreground in a seperate SSH window.
+```
+php artisan queue:work --tries=1
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Compiling Assets
+In the development builds we need to compile our assets so the application looks pretty. To do so, simply run the command below:
+```
+npm run build
+```
+
+This will compile the CSS and JS for the web.
+
+### Running Local Webserver
+If you're using Nginx you'll need to configure it to point to this application, but for quick and dirty development environment testing, simply run `php artisan serve` and browse to the URL it provides.
+
+Thats it! You now have a simple message sending platform running.
