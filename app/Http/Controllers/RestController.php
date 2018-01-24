@@ -6,8 +6,6 @@ use App\Http\Requests\SendMessageRequest;
 use App\Jobs\SendEmailJob;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 
 class RestController extends Controller
 {

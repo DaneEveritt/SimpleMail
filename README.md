@@ -74,3 +74,6 @@ This will compile the CSS and JS for the web.
 If you're using Nginx you'll need to configure it to point to this application, but for quick and dirty development environment testing, simply run `php artisan serve` and browse to the URL it provides.
 
 Thats it! You now have a simple message sending platform running.
+
+# Testing
+This application comes with a very small test suite to ensure that the base view is working correctly, validation occurs as expected, and submitting a message triggers the expected job. There is also a unit test to ensure that the job runs as expected and can use a fallback mail driver as needed.

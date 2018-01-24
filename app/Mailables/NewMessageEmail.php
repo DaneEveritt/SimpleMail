@@ -8,8 +8,14 @@ use Illuminate\Mail\Mailable;
 
 class NewMessageEmail extends Mailable
 {
-    public $request;
+    /**
+     * @var array
+     */
+    public $data;
 
+    /**
+     * @var string
+     */
     public $queueTime;
 
     /**
@@ -24,6 +30,11 @@ class NewMessageEmail extends Mailable
         $this->queueTime = $queueTime;
     }
 
+    /**
+     * Build the email message.
+     *
+     * @return $this
+     */
     public function build()
     {
         return $this->replyTo(array_get($this->data, 'from'))
